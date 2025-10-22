@@ -1,0 +1,70 @@
+/* Custom styles for HMS */
+body {
+    background: linear-gradient(135deg, #e6f0fa 0%, #ffffff 100%);
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    transition: all 0.3s ease;
+}
+
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1);
+}
+
+.card {
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    border-radius: 15px 15px 0 0 !important;
+    padding: 1.5rem;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #0056b3, #003d80);
+    transform: translateY(-2px);
+}
+
+.alert {
+    border-radius: 8px;
+}
+
+.text-primary {
+    color: #0056b3 !important;
+}
+
+h5.text-primary {
+    border-bottom: 2px solid #e6f0fa;
+    padding-bottom: 8px;
+}
