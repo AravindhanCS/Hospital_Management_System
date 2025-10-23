@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from app import db  # Import db from app
 from app.models import User, Patient  # Import models from app.models
@@ -6,24 +7,49 @@ from datetime import datetime
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-    """Handle user login"""
-    print(f"DB instance in login: {db}")
-    print(f"Current app in login: {current_app}")
+    """Handle role-based user login"""
+    if request.method == 'GET':
+        from flask import get_flashed_messages
+        get_flashed_messages()  # Clears success messages from previous login
+        
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = request.form.get('email', '').strip()
+        password = request.form.get('password', '').strip()
+        
+        # Validation 1: Empty fields
+        if not email or not password:
+            flash('Email and password are required.', 'error')
+            return render_template('auth/login.html')
+        
+        # Validation 2: Email format
+        email_pattern = r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, email):
+            flash('Please enter a valid email address.', 'error')
+            return render_template('auth/login.html')
+        
+        # Check if user exists and password matches
         user = User.query.filter_by(email=email).first()
-        if user and user.password_hash == password:  # Simplified; use bcrypt for hashing
-            flash('Login successful', 'success')
-            if user.role == 'admin':
-                return redirect(url_for('admin.dashboard'))
-            elif user.role == 'doctor':
-                return redirect(url_for('doctor.dashboard'))
-            else:
-                return redirect(url_for('patient.dashboard'))
-        flash('Invalid email or password', 'error')
-        return render_template('auth/login.html', error='Invalid credentials')
+        if not user or user.password_hash != password:
+            flash('Invalid credentials.', 'error')
+            return render_template('auth/login.html')
+        
+        # SUCCESS: Clear ALL flash messages before redirect
+        from flask import get_flashed_messages
+        get_flashed_messages()  # Clear existing flash messages
+        
+        # Role-based redirection
+        if '@admin.com' in email.lower():
+            flash('Welcome Admin!', 'success')
+            return redirect(url_for('admin.dashboard'))
+        elif '@trinityhealth.com' in email.lower():
+            flash('Welcome Doctor!', 'success')
+            return redirect(url_for('doctor.dashboard'))
+        else:
+            flash('Welcome Patient!', 'success')
+            return redirect(url_for('patient.dashboard'))
+    
     return render_template('auth/login.html')
 
 @auth.route('/register', methods=['GET', 'POST'])

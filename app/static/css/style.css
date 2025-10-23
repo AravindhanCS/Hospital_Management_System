@@ -68,3 +68,13 @@ h5.text-primary {
     border-bottom: 2px solid #e6f0fa;
     padding-bottom: 8px;
 }
+
+.input-group .btn-outline-secondary {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+}
+
+.input-group .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
