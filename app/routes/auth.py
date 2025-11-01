@@ -7,7 +7,6 @@ from datetime import datetime
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
-@auth.route('/login', methods=['GET', 'POST'])
 def login():
     """Handle role-based user login"""
     if request.method == 'GET':
@@ -32,7 +31,7 @@ def login():
         # Check if user exists and password matches
         user = User.query.filter_by(email=email).first()
         if not user or user.password_hash != password:
-            flash('Invalid credentials.', 'error')
+            flash('Invalid password.', 'error')
             return render_template('auth/login.html')
         
         # SUCCESS: Clear ALL flash messages before redirect
